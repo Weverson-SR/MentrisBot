@@ -1,0 +1,17 @@
+# Ignorar a venv e bibliotecas do Python
+venv/
+*.pyc
+__pycache__/
+env/
+.venv/
+
+# Ignorar configurações do VS Code
+.vscode/
+
+# Ignorar arquivos do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Ignorar logs e banco de dados locais
+*.log
+*.sqlite3
