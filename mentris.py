@@ -52,7 +52,7 @@ class Mentris:
         Returns:
             str: Conteúdo do histórico de conversas.
         """
-        conversas = self.collection.find().sort("_id", -1).limit(self.history_limit)
+        conversas = self.collection.find().sort("_id", -1)
         contexto = ""
         for conversa in conversas:
             contexto = f"Você: {conversa['usuario_input']}\nMentris: {conversa['resposta_limpa']}\n" + contexto
