@@ -1,11 +1,11 @@
 from langchain_ollama import OllamaLLM
 from langchain_core.prompts import ChatPromptTemplate
 from pymongo import MongoClient
-import os
+
 
 # Classe principal do chatbot Mentris
 class Mentris:
-    def __init__(self, model_name="mistral-nemo", mongo_uri="mongodb://localhost:27017/", db_name="mentris_db", collection_name="conversas"):
+    def __init__(self, model_name="mistral-nemo", mongo_uri="mongodb://localhost:27017/", db_name="mentris_db", collection_name="conversas", limite_historico=5):
         """
         Inicializa o chatbot Mentris com um modelo de linguagem, conexão ao MongoDB e limite de histórico.
 
@@ -20,30 +20,43 @@ class Mentris:
         self.client = MongoClient(mongo_uri)
         self.db = self.client[db_name]
         self.collection = self.db[collection_name]
-        self.template = ChatPromptTemplate.from_template(
-                """
-                Você é **Mentris**, uma assistente virtual **inteligente, amigável e carismática**.  
-
-                ### **Função**
-                - Sua missão é **me ajudar a estudar e programar** especialmente em **Python** e outras linguagens.
-                - Sempre responde de forma **objetiva, clara e envolvente**.  
-                - Pode ser **divertida, empática e sarcástica**, mantendo um tom leve e positivo.   
-
-                ### ** Regras de Resposta**
-                - **Idioma**: Sempre responda em **Português do Brasil**, com um tom natural e amigável.  
-                - **Nada de respostas frias!** Seja determinada,gentil e compassiva.  
-                - **Seja gentil e carismática**: Use expressões amigáveis e até girias. 
-                - **Explique de maneira acessível**: Se o tema for técnico, torne-o mais fácil de entender.  
-                - **Resumos inteligentes**: Se a resposta for longa, faça um resumo e pergunte se quero mais detalhes.  
-
-                ### **Histórico**
-                {contexto}
-
-                ### **Pergunta do Usuário**
-                {pergunta}
-                """
-            )
+        self.limite_historico = limite_historico
+        self.template = self.cria_template()
         self.chain = self.template | self.model
+
+    def cria_template(self):
+        """
+        Cria o template de prompt para passar instruções ao chatbot Mentris.
+
+        Returns:
+            ChatPromptTemplate: Template de prompt configurado.
+        """
+        return ChatPromptTemplate.from_template(
+            """
+            Você é **Mentris**, uma assistente virtual **inteligente, amigável e carismática**.  
+
+            ### **Função**
+            - Sua missão é **me ajudar a estudar e programar** especialmente em **Python** e outras linguagens.
+            - Sempre responde de forma **objetiva, clara e envolvente**.  
+            - Pode ser **divertida, empática e sarcástica**, mantendo um tom leve e positivo.   
+
+            ### ** Regras de Resposta**
+            - **Idioma**: Sempre responda em **Português do Brasil**, com um tom natural e amigável.  
+            - **Nada de respostas frias!** Seja determinada,gentil e compassiva.  
+            - **Seja gentil e carismática**: Use expressões amigáveis e até girias. 
+            - **Explique de maneira acessível**: Se o tema for técnico, torne-o mais fácil de entender.  
+            - **Resumos inteligentes**: Se a resposta for longa, faça um resumo e pergunte se quero mais detalhes.  
+
+            ### **Informações Adicionais**
+            - Você tem acesso ao banco de dados MongoDB e pode usar o histórico de conversas para gerar respostas melhores.
+
+            ### **Histórico**
+            {contexto}
+
+            ### **Pergunta do Usuário**
+            {pergunta}
+            """
+        )
 
     def carregando_contexto(self):
         """
@@ -52,10 +65,10 @@ class Mentris:
         Returns:
             str: Conteúdo do histórico de conversas.
         """
-        conversas = self.collection.find().sort("_id", -1)
+        conversas = self.collection.find().sort("_id", -1).limit(self.limite_historico)
         contexto = ""
         for conversa in conversas:
-            contexto = f"Você: {conversa['usuario_input']}\nMentris: {conversa['resposta_limpa']}\n" + contexto
+            contexto = f"Você: {conversa['usuario_input']}\nMentris: {conversa['resposta_limpa']}\n" + contexto   
         return contexto
 
     def salva_contexto(self, usuario_input, resposta_limpa):
