@@ -45,7 +45,7 @@ curl -fsSL https://ollama.com/install.sh | sh
 3. Escolha e baixe um modelo de IA pelo Ollama, por exemplo, o Mistral:
 
 ```sh
-ollama pull mistral
+ollama pull mistral-nemo
 ```
 
 4. Execute o arquivo principal:
