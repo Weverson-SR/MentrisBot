@@ -34,13 +34,17 @@ class MentrisApp(QWidget):
         # Criando um QFrame para a Caixa de Entrada
         self.frame_mensagem = QFrame()
 
-        # 📏 Layout da Caixa de Entrada + Botão
+        # Layout da Caixa de Entrada + Botão
         hbox = QHBoxLayout(self.frame_mensagem)
         hbox.setContentsMargins(10, 5, 10, 5)
 
+        # Placeholder para a caixa de entrada
         self.caixa_mensagem = QLineEdit()
         self.caixa_mensagem.setPlaceholderText("Digite sua mensagem...")
         hbox.addWidget(self.caixa_mensagem)
+
+        # Conectar o sinal returnPressed ao método enviar_mensagem
+        self.caixa_mensagem.returnPressed.connect(self.enviar_mensagem)
 
         # Botão de Enviar
         self.botao_enviar = QPushButton()
