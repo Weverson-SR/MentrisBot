@@ -85,9 +85,9 @@ Este projeto foi criado como parte dos meus estudos em Python e IA, sendo uma ev
 
 2. **Processamento de Respostas com IA Intermediária**: A futura implementação de uma IA intermediária irá otimizar o fluxo de processamento das respostas, permitindo uma análise preliminar das interações antes que a resposta final seja gerada, o que resultará em um desempenho mais ágil e preciso.
 
-3. **Sistema de Feedback e Memória Persistente**: Planejamos integrar um sistema de feedback que, junto com a memória persistente, permitirá que o Mentris aprenda com o usuário ao longo do tempo, ajustando seu comportamento e respostas de forma contínua. Isso proporcionará uma interação mais fluida e adaptativa.
+3. **Sistema de Feedback e Memória Persistente**: Planejo integrar um sistema de feedback que, junto com a memória persistente, permitirá que o Mentris aprenda com o usuário ao longo do tempo, ajustando seu comportamento e respostas de forma contínua. Isso proporcionará uma interação mais fluida e adaptativa.
 
-4. **Detecção de Emoções**: Em uma atualização futura, o Mentris será capaz de detectar estados emocionais do usuário, como "raiva" ou "felicidade", e ajustar suas respostas de acordo, criando uma experiência mais empática e humanizada.
+4. **Detecção de Emoções**: Em uma atualização futura, o Mentris será capaz de detectar emoções na escrita ou fala usuário, como "raiva" ou "felicidade", e ajustar suas respostas de acordo, criando uma experiência mais empática e humanizada.
 
 ## ✨ Contribuição
 
